@@ -84,7 +84,7 @@ vector <xy> NPC::sciezka1(xy konieclg, xy koniecpd, vector<vector<int> > m1[]) {
 			}
 		}
 	}
-	if (bfs[koniec.x][koniec.y] == -1 || czyznaleziono == 0) {
+	if (czyznaleziono == 0 || bfs[koniec.x][koniec.y] == -1 ) {
 
 	}
 	else {
@@ -281,6 +281,7 @@ bool NPC::czy_dlugi() {
 }
 
 void NPC::zach(vector <vector <int> > m1[], vector <NPC>& npc) {
+	DEBUG cout << "pocz" << endl;
 	vector <xy> dospr;
 	vector <int> kier_dospr;
 	queue <xy> q;
@@ -350,6 +351,7 @@ void NPC::zach(vector <vector <int> > m1[], vector <NPC>& npc) {
 	}
 	q.push(pozycja[0]);
 	q.push(pozycja[1]);
+	int cnt = 0;
 	while (!q.empty()) {
 		xy tmp = q.front();
 		q.pop();

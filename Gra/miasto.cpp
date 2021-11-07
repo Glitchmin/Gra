@@ -134,12 +134,12 @@ void atak(int npcIDof, int npcIDdef, bool czykontratak = 0);
 void mapa(vector<vector <int> > m1[]);
 void close();
 void interakcjaMapa(int x,int y,int typm1,int typm1R,int npcID);
-bool obliczpoci (vector <poci> & p, vector<vector <int> > m1[]);
+void obliczpoci (vector <poci> & p, vector<vector <int> > m1[]);
 void rendmape(vector<vector <int> > m1[],int x, int y,xy zaznkr);
 void wartosci();
 bool rozmowaNPC (int n2,int v);
 void ekwipunek();
-//int podn(int npcID, int przedmID, xy pozpodno);
+void podn(int npcID, int przedmID, xy pozpodno);
 void sklep (int npcnumer);
 void zapisz_mape(vector <vector<int> > m1[], int x, int y, bool czyswiat);
 void generuj_przeciwnika(przeciwnicy ktory, vector <int> & npceID, vector <vector<int> > []);
@@ -154,81 +154,82 @@ void zachowanieNPC (vector <int> npceID, vector<vector <int> > m1[]){
     int tmpx[4]={0,-1,0,1};
     int tmpy[4]={-1,0,1,0};
     npceID.push_back(0);
+    DEBUG cout << "pocz2" << endl;
     for (int i=0; i<npceID.size();i++){
         int ID=npceID[i];
-        if (!npc[ID].czymartwy){
-            npc[ID].sprawdzef();
-            m1[4][npc[ID].x][npc[ID].y]=ID;
-            if (SDL_GetTicks()-npc[ID].truchu<=npc[ID].tmaxruch && npc[ID].popx<m1[0].size() && npc[ID].popx>=0 && npc[ID].popy<m1[0].size() && npc[ID].popy>=0){
-                m1[4][npc[ID].popx][npc[ID].popy]=ID;
+        if (!npc.at(ID).czymartwy){
+            npc.at(ID).sprawdzef();
+            m1[4][npc.at(ID).x][npc.at(ID).y]=ID;
+            if (SDL_GetTicks()-npc.at(ID).truchu<=npc.at(ID).tmaxruch && npc.at(ID).popx<m1[0].size() && npc.at(ID).popx>=0 && npc.at(ID).popy<m1[0].size() && npc.at(ID).popy>=0){
+                m1[4][npc.at(ID).popx][npc.at(ID).popy]=ID;
             }
-            int x = tmpx[npc[ID].kier()];
-            int y = tmpy[npc[ID].kier()];
-            if (npc[ID].czy_dlugi() && npc[ID].x+x>=0 && npc[ID].y+y>=0 && npc[ID].x+x<m1[0].size() && npc[ID].y+y<m1[0].size() && m1[4][npc[ID].x+x][npc[ID].y+y]==-1){
-                m1[4][npc[ID].x+x][npc[ID].y+y]=ID;
+            int x = tmpx[npc.at(ID).kier()];
+            int y = tmpy[npc.at(ID).kier()];
+            if (npc.at(ID).czy_dlugi() && npc.at(ID).x+x>=0 && npc.at(ID).y+y>=0 && npc.at(ID).x+x<m1[0].size() && npc.at(ID).y+y<m1[0].size() && m1[4][npc.at(ID).x+x][npc.at(ID).y+y]==-1){
+                m1[4][npc.at(ID).x+x][npc.at(ID).y+y]=ID;
             }
-            if (npc[ID].czy_dlugi() && npc[ID].popx+x>=0 && npc[ID].popy+y>=0 && npc[ID].popx+x<m1[0].size() && npc[ID].popy+y<m1[0].size() && m1[4][npc[ID].popx+x][npc[ID].popy+y]==-1){
-                m1[4][npc[ID].popx+x][npc[ID].popy+y]=ID;
+            if (npc.at(ID).czy_dlugi() && npc.at(ID).popx+x>=0 && npc.at(ID).popy+y>=0 && npc.at(ID).popx+x<m1[0].size() && npc.at(ID).popy+y<m1[0].size() && m1[4][npc.at(ID).popx+x][npc.at(ID).popy+y]==-1){
+                m1[4][npc.at(ID).popx+x][npc.at(ID).popy+y]=ID;
             }
-            if (npc[ID].czyprzerwany_atak && SDL_GetTicks()-npc[ID].tatak>=npc[ID].tmaxatak){
-                npc[ID].czyprzerwany_atak=0;
+            if (npc.at(ID).czyprzerwany_atak && SDL_GetTicks()-npc.at(ID).tatak>=npc.at(ID).tmaxatak){
+                npc.at(ID).czyprzerwany_atak=0;
             }
         }
     }
-
+    DEBUG cout << "sr" << endl;
     npceID.pop_back();
     for (int i=0; i<npceID.size();i++){
         int ID=npceID[i];
-        if (npc[ID].hp<=0){
-            npc[ID].zabij();
+        if (npc.at(ID).hp<=0){
+            npc.at(ID).zabij();
         }
-        if (!npc[ID].czymartwy){
-            bool gotowy= SDL_GetTicks()-npc[ID].tatak>npc[ID].tmaxatak && !npc[ID].czystun && npc[ID].sciezka2.empty() && SDL_GetTicks() - npc[ID].truchu > npc[ID].tmaxruch;
+        if (!npc.at(ID).czymartwy){
+            bool gotowy= SDL_GetTicks()-npc.at(ID).tatak>npc.at(ID).tmaxatak && !npc.at(ID).czystun && npc.at(ID).sciezka2.empty() && SDL_GetTicks() - npc.at(ID).truchu > npc.at(ID).tmaxruch;
             if (gotowy){
-                npc[ID].zach(m1,npc);
+                npc.at(ID).zach(m1,npc);
             }
-            if (npc[ID].czyatak && npc[ID].ekw[0].empty() && gotowy){
-                npc[ID].tatak=SDL_GetTicks();
-                npc[ID].tmaxatak=1200;
-                npc[ID].tmaxatak2=400;
+            if (npc.at(ID).czyatak && npc.at(ID).ekw[0].empty() && gotowy){
+                npc.at(ID).tatak=SDL_GetTicks();
+                npc.at(ID).tmaxatak=1200;
+                npc.at(ID).tmaxatak2=400;
             }
-            if (npc[ID].czyatak && !npc[ID].ekw[0].empty() && gotowy){
-                npc[ID].anim_ataku();
-                npc[ID].atak(rand()%3==0, SDL_GetTicks());
+            if (npc.at(ID).czyatak && !npc.at(ID).ekw[0].empty() && gotowy){
+                npc.at(ID).anim_ataku();
+                npc.at(ID).atak(rand()%3==0, SDL_GetTicks());
             }
-            if (!npc[ID].sciezka2.empty() && SDL_GetTicks() - npc[ID].truchu > npc[ID].tmaxruch){
-                xy tmp=npc[ID].sciezka2.back();
-                npc[ID].sciezka2.pop_back();
-                if (!(m1[4][tmp.x][tmp.y]==-1 || m1[4][tmp.x][tmp.y]==m1[4][npc[ID].x][npc[ID].y]) || m1[2][tmp.x][tmp.y]!=-1){
-                    npc[ID].sciezka2.clear();
+            if (!npc.at(ID).sciezka2.empty() && SDL_GetTicks() - npc.at(ID).truchu > npc.at(ID).tmaxruch){
+                xy tmp=npc.at(ID).sciezka2.back();
+                npc.at(ID).sciezka2.pop_back();
+                if (!(m1[4][tmp.x][tmp.y]==-1 || m1[4][tmp.x][tmp.y]==m1[4][npc.at(ID).x][npc.at(ID).y]) || m1[2][tmp.x][tmp.y]!=-1){
+                    npc.at(ID).sciezka2.clear();
                 }else{
-                    npc[ID].popx=npc[ID].x;
-                    npc[ID].popy=npc[ID].y;
-                    npc[ID].x=tmp.x;
-                    npc[ID].y=tmp.y;
-                    npc[ID].tmaxruch=npc[ID].ruch1-((bool)(npc[ID].czydodge))*npc[ID].ruch1/2;
-                    npc[ID].czydodge=0;
-                    npc[ID].truchu=SDL_GetTicks();
+                    npc.at(ID).popx=npc.at(ID).x;
+                    npc.at(ID).popy=npc.at(ID).y;
+                    npc.at(ID).x=tmp.x;
+                    npc.at(ID).y=tmp.y;
+                    npc.at(ID).tmaxruch=npc.at(ID).ruch1-((bool)(npc.at(ID).czydodge))*npc.at(ID).ruch1/2;
+                    npc.at(ID).czydodge=0;
+                    npc.at(ID).truchu=SDL_GetTicks();
                 }
             }
-
-            if (npc[ID].czyatak && SDL_GetTicks()-npc[ID].tatak>npc[ID].tmaxatak2){
-                npc[ID].czyatak=0;
-                npc[ID].czy_anim_ataku=0;
-                xy cel_ataku = npc[ID].xy_ataku;
-                if (m1[4][cel_ataku.x][cel_ataku.y]!=-1 && relacja[npc[ID].strona][npc[m1[4][cel_ataku.x][cel_ataku.y]].strona]<0){
+            if (npc.at(ID).czyatak && SDL_GetTicks()-npc.at(ID).tatak>npc.at(ID).tmaxatak2){
+                npc.at(ID).czyatak=0;
+                npc.at(ID).czy_anim_ataku=0;
+                xy cel_ataku = npc.at(ID).xy_ataku;
+                if (m1[4][cel_ataku.x][cel_ataku.y]!=-1 && relacja[npc.at(ID).strona][npc[m1[4][cel_ataku.x][cel_ataku.y]].strona]<0){
                     atak(ID,m1[4][cel_ataku.x][cel_ataku.y]);
                 }
             }
         }
 
 
-        /*m1[4][npc[ID].x+(npc[ID].zwr_hitbox().x_prawy>1)][npc[ID].y]=ID;
-        if (SDL_GetTicks()-npc[ID].truchu>npc[ID].tmaxruch && npc[ID].tmaxruch){
-            m1[4][npc[ID].popx][npc[ID].popy]=ID;
-            m1[4][npc[ID].x+(npc[ID].zwr_hitbox().x_prawy>1)][npc[ID].y]=ID;
+        /*m1[4][npc.at(ID).x+(npc.at(ID).zwr_hitbox().x_prawy>1)][npc.at(ID).y]=ID;
+        if (SDL_GetTicks()-npc.at(ID).truchu>npc.at(ID).tmaxruch && npc.at(ID).tmaxruch){
+            m1[4][npc.at(ID).popx][npc.at(ID).popy]=ID;
+            m1[4][npc.at(ID).x+(npc.at(ID).zwr_hitbox().x_prawy>1)][npc.at(ID).y]=ID;
         }*/
     }
+    DEBUG cout << "kon" << endl;
 }
 
 
@@ -317,7 +318,7 @@ int miasto1(int skad, vector<vector <int> > m1[], int gdzie, bool czywiecznanoc,
     }
     xy pozpodn;
     pozpodn.x=-1;
-    int podno;
+    int podno=-1;
     cout << "Jest tu "<<npceID.size()<<" NPC"<<endl;
     for (int i=0; i<npceID.size();i++){
         cout << npceID[i]<<" "<< npc[npceID[i]].zasieg<<" "<< npc[npceID[i]].predkat<<" "<< npc[npceID[i]].x<<" "<< npc[npceID[i]].y<<" "<< npc[npceID[i]].minx<<" "<< npc[npceID[i]].maxx<<" "<< npc[npceID[i]].miny<<" "<< npc[npceID[i]].maxy<<" "
@@ -634,7 +635,7 @@ int miasto1(int skad, vector<vector <int> > m1[], int gdzie, bool czywiecznanoc,
         }
         DEBUG cout << "test4"<<npc[0].x<<" "<<npc[0].y<<endl;
         if (SDL_GetTicks()>t5){
-            //obliczpoci(pociski,m1);
+            obliczpoci(pociski,m1);
             t5=SDL_GetTicks()+20;
             ttest=SDL_GetTicks();
             rendmape(m1,max(0,npc[0].x-ZASx)+((int)m1[0].size()-(ZASx)-npc[0].x-1)*((int)((int)m1[0].size()-(ZASx)-npc[0].x-1)<0),
@@ -718,7 +719,7 @@ int miasto1(int skad, vector<vector <int> > m1[], int gdzie, bool czywiecznanoc,
                 ekwipunek();
             }
             if (pozpodn.x!=-1){
-                //podn(0,podno, pozpodn);
+                podn(0,podno, pozpodn);
             }else{
                 czypodn=0;
             }

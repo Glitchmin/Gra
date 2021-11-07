@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ekwipunek.cpp" />
+    <ClCompile Include="gen_przeciw.cpp" />
     <ClCompile Include="gen_terenu.cpp" />
     <ClCompile Include="gra1.cpp" />
     <ClCompile Include="gui.cpp" />
@@ -75,6 +76,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <EnableASAN>true</EnableASAN>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -114,7 +116,7 @@
     <IncludePath>C:\Users\Adam\Documents\Visual Studio 2019\Libs\SDL2_ttf-2.0.15\include;C:\Users\Adam\Documents\Visual Studio 2019\Libs\SDL2_image-2.0.5\include;C:\Users\Adam\Documents\Visual Studio 2019\Libs\SDL2-2.0.16\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\Adam\Documents\Visual Studio 2019\Libs\SDL2-2.0.16\lib\x64;C:\Users\Adam\Documents\Visual Studio 2019\Libs\SDL2_image-2.0.5\lib\x64;C:\Users\Adam\Documents\Visual Studio 2019\Libs\SDL2_ttf-2.0.15\lib\x64;$(LibraryPath)</LibraryPath>
     <IntDir>..\x64\Debug</IntDir>
-    <OutDir>.\x64\Debug</OutDir>
+    <OutDir>..\x64\Debug</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
