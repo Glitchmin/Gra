@@ -1,7 +1,6 @@
 #include <SDL.h>
 #include <vector>
 #include <cstdlib>
-#include <numeric>
 #include <time.h>
 
 #include "it.h"
@@ -22,6 +21,15 @@ extern vector <NPC> npc;
 extern vector <xy> pozprzedm;
 
 xy multipodn (int x, int y, vector <it> & itemy);
+
+int gcd(int a, int b) {
+    while (b != 0) {
+        int c = a % b;
+        a = b;
+        b = c;
+    }
+    return a;
+}
 
 SDL_Texture* przedmnaekr(vector <it> & vect,int ID){
     int x=0,y=0;

@@ -112,7 +112,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>C:\Users\Adam\Documents\Visual Studio 2019\Libs\SDL2_ttf-2.0.15\include;C:\Users\Adam\Documents\Visual Studio 2019\Libs\SDL2_image-2.0.5\include;C:\Users\Adam\Documents\Visual Studio 2019\Libs\SDL2-2.0.16\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Adam\Documents\Visual Studio 2019\Libs\SDL2_ttf-2.0.15\lib\x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Users\Adam\Documents\Visual Studio 2019\Libs\SDL2-2.0.16\lib\x64;C:\Users\Adam\Documents\Visual Studio 2019\Libs\SDL2_image-2.0.5\lib\x64;C:\Users\Adam\Documents\Visual Studio 2019\Libs\SDL2_ttf-2.0.15\lib\x64;$(LibraryPath)</LibraryPath>
+    <IntDir>..\x64\Debug</IntDir>
+    <OutDir>.\x64\Debug</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>

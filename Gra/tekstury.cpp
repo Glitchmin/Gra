@@ -110,6 +110,7 @@ bool wczytajtxterrain(){
 bool wczytajtxnpc(){
     SDL_RWops* plik=SDL_RWFromFile("tx/npc/hitboxnpc.bin","r");
     if (plik == NULL) {
+        cout << "nie znaleziono pliku" << endl;
         return 0;
     }
     int il_n;
@@ -132,7 +133,6 @@ bool wczytajtxnpc(){
         SDL_RWread(plik, &hitboxnpc[n][1].y_dol,sizeof(double),1);
     }
     SDL_RWclose(plik);
-    return 1;
 }
 
 

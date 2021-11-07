@@ -78,6 +78,10 @@ efekt::efekt(int czest, int ID, int ile, double obr, int zwobr, bool czystun){
 
 bool wzapis(){
     SDL_RWops* plik=SDL_RWFromFile("fl/fl00.bin","wb+");
+    if (plik == NULL) {
+        cout << "nie znaleziono pliku";
+        return 0;
+    }
     cout << "fl/fl00.bin - wczytano pomyslnie"<<endl;
     for (int i=0; i<ILOSCw;i++){
             w[i][0]=w[i].size()-1;
@@ -100,13 +104,19 @@ bool wodczyt(bool czyorig){
     }else{
         plik=SDL_RWFromFile("fl/fl00.bin","rb");
     }
+    if (plik == NULL) {
+        cout << "nie znaleziono pliku" << endl;
+        return 0;
+    }
     cout << "fl/fl00 - odczytywanie"<<endl;
     for (int i=0; i<ILOSCw;i++){
         w[i].clear();
         w[i].push_back(0);
         SDL_RWread(plik, &w[i][0],sizeof(int),1);
         cout << "w["<<i<<"][0]-"<<w[i][0]<<endl;
-        w[i].resize(w[i][0]+1);
+        if (w[i][0] > -1) {
+            w[i].resize(w[i][0] + 1);
+        }
         for (int j=1;j<w[i][0]+1;j++){
             SDL_RWread(plik, &w[i][j],sizeof(int),1);
             cout << w[i][j]<<" ";
@@ -129,7 +139,7 @@ SDL_Texture* txL (string nazwa){
         tmp=IMG_Load(nazwa.c_str());
         if (tmp==NULL){
             cout << "NIE ZNALEZIONO "<<nazwa<<endl;
-            MessageBox(NULL, (LPCWSTR)("nie znaleziono "+nazwa+" ani "+nazwa2+", program zadziala ale brakuje tekstury").c_str(),(LPCWSTR)"problem",MB_ICONWARNING);
+            MessageBox(NULL,(LPCWSTR)(("nie znaleziono "+nazwa+" ani "+nazwa2+", program zadziala ale brakuje tekstury").c_str()), (LPCWSTR)"problem",MB_ICONWARNING);
         }else{
             cout << "wczytano"<<nazwa<<endl;
         }

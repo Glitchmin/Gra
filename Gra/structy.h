@@ -21,17 +21,25 @@ using namespace std;
 
 struct xy{
 int x,y;
+xy() {
+    this->x = -1;
+    this->y = -1;
+}
+xy(int x, int y) {
+    this->x = x;
+    this->y = y;
+}
 };
 
 struct xyd{
 double x,y;
-xyd(double x, double y) {
-    this->x = x;
-    this->y = y;
-};
 xyd() {
     this->x = -1;
     this->y = -1;
+}
+xyd(double x, double y) {
+    this->x = x;
+    this->y = y;
 }
 };
 

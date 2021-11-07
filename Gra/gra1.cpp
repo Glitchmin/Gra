@@ -193,7 +193,7 @@ srand(time(NULL)*1000);
 int x = GetSystemMetrics(SM_CXSCREEN);
 int y = GetSystemMetrics(SM_CYSCREEN);
 wodczyt(0);
-npc.resize(3);
+npc.resize(1);
 cout << "w[1][1]"<<w[1][1]<<endl;
 ZASx=w[3][1];
 ZASy=w[3][2];
@@ -257,13 +257,13 @@ txanim.resize(7);
 txubr.push_back(txL("tx/npc/ubr0.bmp"));
 txoczy.push_back(txL("tx/npc/oczy0.bmp"));
 txwlosy.push_back(txL("tx/npc/hair0.bmp"));
-for (int i=0; i<2;i++){
-    NPC tmp;
-    npc[i]=tmp;
-    npc[i].odczyt(i,0);
-    npc[i].predkat=1000;
-    npc[i].nrtekstury=0;
-}
+
+NPC tmp;
+npc[0]=tmp;
+npc[0].odczyt(0,0);
+npc[0].predkat=1000;
+npc[0].nrtekstury=0;
+
 for (int i=0;i<7; i++){
 stringstream ss;
 ss << i;
@@ -294,7 +294,7 @@ for (int j=1;j<7;j++){
 //npc[1].wierz[0].tekst=;npc[1].wierz[0].czyj=1;npc[1].wierz[0].wtyp=0;
 
 cout << "N"<<endl;
-npc[1].n=15;
+/*npc[1].n=15;
 npc[1].e.clear();
 npc[1].e.resize(npc[1].n,0);
 npc[1].wierz.clear();
@@ -333,7 +333,7 @@ npc[1].g[9].push_back(12);
 npc[1].g[12].push_back(13);
 npc[1].g[13].push_back(14);
 npc[1].wspsprzedazy=3.50;
-npc[1].wspkupna=0.50;
+npc[1].wspkupna=0.50;*/
 npc[0].predkat=1000;
 //npc[0].eq.push_back(stworzbron(21.37,0,15,120,130,0.50,0.4,1,0,-1,-1,52,70));
 //npc[0].eq.push_back(stworzbron(21.37,0,15,120,130,0.50,0.4,1,0,-1,-1,52,70));

@@ -17,11 +17,17 @@
 
 using namespace std;
 
+enum przeciwnicy{
+    wilk,
+    bandyta
+};
+
 class NPC{
 public:
     NPC(int x, int y, int maxx, int minx, int maxy, int miny,int ruch1, int ruch2,int nrtekstury,int nrubr, int hp, int ileprz, vector <int> prz,vector <vector <it> >ekw, plecak pl,int rozmjedz,int strona, int zasieg, int sila, int predkat,double h);
     NPC();
     int x,y,popx,popy,maxx,minx,maxy,miny,ruch1,ruch2;
+    int ID;
     xyd poz;
     int kierataku, popkier;
     xy xy_ataku;

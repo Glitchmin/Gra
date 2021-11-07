@@ -123,6 +123,7 @@ extern SDL_Texture* txmiasto0;
 extern bool czyzmianamiasto0;
 extern xy pozgr;
 extern map<pair<int,int>, pair<int,bool> > przezr;
+przeciwnicy przeciwnik;
 
 int stworzNPC(NPC npctmp);
 it stworzjedz (double heal, double coile, double naile,int zwsily, int zwdex, int tekstura, int t, int maxt, int wym, int value, int bdmg=0,int bap=0, int bas=0, int bcrch=0, int bcrdmg=0, int bmovspd=0, int bds=0);
@@ -138,9 +139,10 @@ void rendmape(vector<vector <int> > m1[],int x, int y,xy zaznkr);
 void wartosci();
 bool rozmowaNPC (int n2,int v);
 void ekwipunek();
-int podn(int npcID, int przedmID, xy pozpodno);
+//int podn(int npcID, int przedmID, xy pozpodno);
 void sklep (int npcnumer);
 void zapisz_mape(vector <vector<int> > m1[], int x, int y, bool czyswiat);
+void generuj_przeciwnika(przeciwnicy ktory, vector <int> & npceID, vector <vector<int> > []);
 
 void zachowanieNPC (vector <int> npceID, vector<vector <int> > m1[]){
     DEBUG cout << "pocz"<<endl;
@@ -173,6 +175,7 @@ void zachowanieNPC (vector <int> npceID, vector<vector <int> > m1[]){
             }
         }
     }
+
     npceID.pop_back();
     for (int i=0; i<npceID.size();i++){
         int ID=npceID[i];
@@ -180,10 +183,6 @@ void zachowanieNPC (vector <int> npceID, vector<vector <int> > m1[]){
             npc[ID].zabij();
         }
         if (!npc[ID].czymartwy){
-            m1[4][npc[ID].x][npc[ID].y]=ID;
-            if (m1[4][npc[ID].x][npc[ID].y+npc[ID].zwr_hitbox().x_prawy>1.0]==-1){
-                m1[4][npc[ID].x][npc[ID].y+npc[ID].zwr_hitbox().x_prawy>1.0]=ID;
-            }
             bool gotowy= SDL_GetTicks()-npc[ID].tatak>npc[ID].tmaxatak && !npc[ID].czystun && npc[ID].sciezka2.empty() && SDL_GetTicks() - npc[ID].truchu > npc[ID].tmaxruch;
             if (gotowy){
                 npc[ID].zach(m1,npc);
@@ -242,16 +241,8 @@ int miasto1(int skad, vector<vector <int> > m1[], int gdzie, bool czywiecznanoc,
     czyzmianamiasto0=1;
     txmiasto=SDL_CreateTexture(Rend, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET,KRATKA*(2*ZASx+3), KRATKA*(2*ZASy+3));
     txmiasto0=SDL_CreateTexture(Rend, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET,KRATKA*(2*ZASx+3), KRATKA*(2*ZASy+3));
-    int x=10,y=10;
     npc[0].nrubr=0;
-    NPC npctmp(x+2,y+1,x+rand()%3,y+rand()%3,x-rand()%3,y-rand()%3,500,500,1,-1,10,1,{10},{},{},5,1,5,1,1000,1);
-    //NPC npctmp2(x+5,y+5,x+rand()%3,y+rand()%3,x-rand()%3,y-rand()%3,500,500,1,-1,10,1,{10},{},{},5,0,5,1,1000,1);
-    int numer= stworzNPC(npctmp);
-    //int numer2= stworzNPC(npctmp2);
-    npc[numer].gdzie=1;
-    //npc[numer2].gdzie=1;
-    npc[numer].ekw[0].push_back(stworzbron(1,1.50,0.50,0.30,5,-1,-1,52,1,1,1));
-    //npc[numer2].ekw[0].push_back(stworzbron(0,1.20,0.50,0.20,4,-1,-1,52,1,1,1));
+
     WYMx=m1[0].size();
     WYMy=m1[0][0].size();
     cout << "test"<<m1[3].size()<<" "<<WYMy<<endl;
@@ -273,12 +264,12 @@ int miasto1(int skad, vector<vector <int> > m1[], int gdzie, bool czywiecznanoc,
     bool ignorujenter=1;
     bool ignorujgranice=1;
     bool ignoruj_spacje;
-    Uint32 t4,t5,ttest,ttest2=0,tluku=SDL_GetTicks()+1000;
+    Uint32 t4,t5,ttest,ttest2=SDL_GetTicks(),tluku=SDL_GetTicks();
     Uint32 t_L_myszy=SDL_GetTicks();
     bool b_L_myszy=0;
     bool b_R=0;
     bool czy_L_atak=0;
-    xy interakcja = { -1,-1 };
+    xy interakcja;
     t4= SDL_GetTicks();
     t5= SDL_GetTicks();
     ttest=(SDL_GetTicks()-ttest2)+w[4][1];
@@ -322,9 +313,7 @@ int miasto1(int skad, vector<vector <int> > m1[], int gdzie, bool czywiecznanoc,
     zle.y=-1;
     vector <int> npceID;
     for (int i=1; i<npc.size(); i++){
-        if (npc[i].gdzie==gdzie){
-            npceID.push_back(i);
-        }
+        npceID.push_back(i);
     }
     xy pozpodn;
     pozpodn.x=-1;
@@ -348,6 +337,9 @@ int miasto1(int skad, vector<vector <int> > m1[], int gdzie, bool czywiecznanoc,
     Uint32 tpocisk=0;
     Uint32 tpocisktmp=0;
     bool myszpocisk=(GetKeyState(VK_RBUTTON) & 0x80);
+
+
+    generuj_przeciwnika(wilk, npceID, m1);
 
     while( czek ){
         DEBUG cout << "test1"<<endl;
@@ -389,6 +381,7 @@ int miasto1(int skad, vector<vector <int> > m1[], int gdzie, bool czywiecznanoc,
         if (npc[0].x!=0 && npc[0].x!=63 && npc[0].y!=0 && npc[0].y!=63){
             ignorujgranice=0;
         }
+
         DEBUG cout << "test2"<<endl;
         if (!czyekw){
             ekwwybr=0;
@@ -636,12 +629,12 @@ int miasto1(int skad, vector<vector <int> > m1[], int gdzie, bool czywiecznanoc,
         }
         zachowanieNPC(npceID,m1);
         if (npc[0].hp<=0){
-            MessageBox(NULL, (LPCWSTR)"U died, lol",(LPCWSTR)"git gud",MB_ICONERROR);
+            MessageBox(NULL, (LPCWSTR)"U died, lol", (LPCWSTR)"git gud",MB_ICONERROR);
             return -1;
         }
         DEBUG cout << "test4"<<npc[0].x<<" "<<npc[0].y<<endl;
         if (SDL_GetTicks()>t5){
-            obliczpoci(pociski,m1);
+            //obliczpoci(pociski,m1);
             t5=SDL_GetTicks()+20;
             ttest=SDL_GetTicks();
             rendmape(m1,max(0,npc[0].x-ZASx)+((int)m1[0].size()-(ZASx)-npc[0].x-1)*((int)((int)m1[0].size()-(ZASx)-npc[0].x-1)<0),
@@ -725,7 +718,7 @@ int miasto1(int skad, vector<vector <int> > m1[], int gdzie, bool czywiecznanoc,
                 ekwipunek();
             }
             if (pozpodn.x!=-1){
-                podn(0,podno, pozpodn);
+                //podn(0,podno, pozpodn);
             }else{
                 czypodn=0;
             }

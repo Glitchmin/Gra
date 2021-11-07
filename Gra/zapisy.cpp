@@ -17,7 +17,7 @@ void zapisz_mape(vector <vector<int> > m1[], int x, int y, bool czyswiat){
     cout <<" otwarto "<< sciezka2<<endl;
     SDL_RWops* plik=SDL_RWFromFile(sciezka2.c_str(),"wb+");
     if (plik==NULL){
-        MessageBox(NULL, (LPCWSTR)"nie udalo sie utworzyc pliku w folderze fl/maps", (LPCWSTR)"problem",MB_ICONWARNING);
+        MessageBox(NULL,(LPCWSTR)"nie udalo sie utworzyc pliku w folderze fl/maps", (LPCWSTR)"problem",MB_ICONWARNING);
         return;
     }
     int rozm1=m1[0].size();
@@ -49,7 +49,7 @@ bool odczyt_mapy(vector <vector<int> > m1[], int x, int y, bool czyswiat){
     cout <<" otwarto "<< sciezka2<<endl;
     SDL_RWops* plik=SDL_RWFromFile(sciezka2.c_str(),"r");
     if (plik==NULL){
-        MessageBox(NULL,(LPCWSTR)"nie udalo sie otworzyc pliku w folderze fl/maps", (LPCWSTR)"problem",MB_ICONWARNING);
+        MessageBox(NULL, (LPCWSTR)"nie udalo sie otworzyc pliku w folderze fl/maps", (LPCWSTR)"problem",MB_ICONWARNING);
         return 0;
     }
     int rozm1;

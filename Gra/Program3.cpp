@@ -4,12 +4,12 @@
 #include <time.h>
 #include <windows.h>
 #include <sstream>
-#include <winuser.h>
+#include<bits/stdc++.h>
+#include<winuser.h>
 #include <SDL_ttf.h>
 #include <SDL_opengl.h>
 #include <conio.h>
 using namespace std;
-
 void zapisz(vector <int> a,vector <int> odsw, string s){
     cout <<" otwarto "<< s;
     SDL_RWops* plik=SDL_RWFromFile(s.c_str(),"wb+");

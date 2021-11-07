@@ -105,6 +105,52 @@ void stworzjezioro(int x, int y,int w,int h,vector <vector <int> > m1[]){
     }
 }
 
+xy zwroc_pkt_fav(vector <vector <int> > m1[]){
+    xy fav;
+    int maksi=0;
+    vector <vector <bool> > e;
+    e.clear();
+    e.resize(m1[0].size());
+    for (int i=0; i<m1[0].size();i++){
+        e[i].resize(m1[0][0].size(),0);
+    }
+    for (int i=0; i<m1[0].size();i++){
+        for(int j=0; j<m1[0].size();j++){
+            queue<xy> q;
+            xy tmpp;
+            tmpp.x=i;
+            tmpp.y=j;
+            q.push(tmpp);
+            int rozm=0;
+            if (!e[i][j]&&(m1[2][i][j]==-1)){
+                while(!q.empty()){
+                    rozm++;
+                    xy tmpp = q.front();
+                    q.pop();
+                    e[tmpp.x][tmpp.y]=1;
+                    for (int i=0; i<4;i++){
+                        if (tmpp.x+tmpx[i] >=0 && tmpp.x+tmpx[i] <m1[0].size() && tmpp.y+tmpy[i]>=0 && tmpp.y+tmpy[i]<m1[0].size()){
+                            if (!e[tmpp.x+tmpx[i]][tmpp.y+tmpy[i]]&&(m1[2][tmpp.x+tmpx[i]][tmpp.y+tmpy[i]]==-1)){
+                                e[tmpp.x+tmpx[i]][tmpp.y+tmpy[i]]=1;
+                                xy tmp;
+                                tmp.x=tmpp.x+tmpx[i];
+                                tmp.y=tmpp.y+tmpy[i];
+                                q.push(tmp);
+                            }
+                        }
+                    }
+                }
+                if (rozm>maksi){
+                    fav.x=i;
+                    fav.y=j;
+                }
+                maksi=max(maksi,rozm);
+            }
+        }
+    }
+    return fav;
+}
+
 void stworzmape (vector <vector <int> > m1[],int x,int y, int biom){
 for (int j=0; j<6;j++){
     m1[j].resize(64);
@@ -239,7 +285,6 @@ if (biom==1){
     int wynik=0;
     int wynik2=0;
     int wynik3=0;
-    xy fav;
     vector <vector <int> > e;
     e.resize(m1[0].size());
     for (int i=0; i<m1[0].size();i++){
@@ -255,47 +300,13 @@ if (biom==1){
             rekur2(x,y,m1);
         }
     }
-    int maksi=0;
     for (int i=0; i<m1[0].size();i++){
         m1[2][0][i]=0;
         m1[2][i][0]=0;
         m1[2][i][((int)m1[0].size())-1]=0;
         m1[2][((int)m1[0].size())-1][i]=0;
     }
-    for (int i=0; i<m1[0].size();i++){
-        for(int j=0; j<m1[0].size();j++){
-            queue<xy> q;
-            xy tmpp;
-            tmpp.x=i;
-            tmpp.y=j;
-            q.push(tmpp);
-            int rozm=0;
-            if (!e[i][j]&&(m1[2][i][j]==-1)){
-                while(!q.empty()){
-                    rozm++;
-                    xy tmpp = q.front();
-                    q.pop();
-                    e[tmpp.x][tmpp.y]=1;
-                    for (int i=0; i<4;i++){
-                        if (tmpp.x+tmpx[i] >=0 && tmpp.x+tmpx[i] <m1[0].size() && tmpp.y+tmpy[i]>=0 && tmpp.y+tmpy[i]<m1[0].size()){
-                            if (!e[tmpp.x+tmpx[i]][tmpp.y+tmpy[i]]&&!(m1[0][tmpp.x+tmpx[i]][tmpp.y+tmpy[i]]%2)){
-                                e[tmpp.x+tmpx[i]][tmpp.y+tmpy[i]]=1;
-                                xy tmp;
-                                tmp.x=tmpp.x+tmpx[i];
-                                tmp.y=tmpp.y+tmpy[i];
-                                q.push(tmp);
-                            }
-                        }
-                    }
-                }
-                if (rozm>maksi){
-                    fav.x=i;
-                    fav.y=j;
-                }
-                maksi=max(maksi,rozm);
-            }
-        }
-    }
+    xy fav=zwroc_pkt_fav(m1);
     queue <xy> q;
     e.clear();
     e.resize(m1[0].size());
