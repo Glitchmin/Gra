@@ -1,5 +1,5 @@
 # Gra
-The abandonded 2.5D RPG project
+The abandonded 2.5D RPG project \
 Game with the same concept is currently under development under the name Giera
 
 Gameplay example:
